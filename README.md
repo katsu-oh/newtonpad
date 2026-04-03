@@ -46,16 +46,16 @@ You can also specify configuration files via command‑line options:
 
 Example: ``NewtonPad.exe NewtonPad2.ini ThumbKey2.ini``
 
-*1 You may specify either an absolute or relative path. If a relative path is used, the file will be searched in the following locations in order:
- 
-1. Application data folder (create manually if needed):  
-```C:\Users\<UserName>\AppData\Roaming\Katsuo\NewtonPad```
-2. The program's current directory 
-3. The folder containing the program
- 
-*2 Optional. However, if the 2nd parameter is specified, the 1st cannot be omitted.
-
-*3 Optional.
+> *1 You may specify either an absolute or relative path. If a relative path is used, the file will be searched in the following locations in order:
+> 
+> 1. Application data folder (create manually if needed):  
+> ```C:\Users\<UserName>\AppData\Roaming\Katsuo\NewtonPad```
+> 2. The program's current directory 
+> 3. The folder containing the program
+> 
+> *2 Optional. However, if the 2nd parameter is specified, the 1st cannot be omitted.
+>
+> *3 Optional.
 
 If you launch the program twice, the previously running instance will automatically exit.
 This allows you to switch configuration files by using command‑line options.

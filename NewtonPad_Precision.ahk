@@ -1,10 +1,10 @@
 #Requires AutoHotkey v1 64-bit
 
 ;-----------------------------------------------------------------------------
-;@Ahk2Exe-SetFileVersion 5.0.0.0
+;@Ahk2Exe-SetFileVersion 5.0.1.0
 ;@Ahk2Exe-SetDescription Touchpad Utility "NewtonPad"
 ;@Ahk2Exe-SetProductName NewtonPad
-;@Ahk2Exe-SetProductVersion 5.0.0.0
+;@Ahk2Exe-SetProductVersion 5.0.1.0
 ;@Ahk2Exe-SetCopyright Katsuo`, 2009-2026
 ;@Ahk2Exe-SetOrigFilename NewtonPad.exe
 ;-----------------------------------------------------------------------------
@@ -14,7 +14,7 @@
 goto,Thumb_End
 
 Thumb_Init_Driver(){
-    Global Thumb_Precision_BeforePreparsed := True
+    Global Thumb_Precision_hDevice_Preparsed := 0
 
     DllCall("LoadLibrary", "Str","hid")
 
@@ -29,21 +29,26 @@ Thumb_Init_Driver(){
 }
 
 Thumb_Precision_StateOn(wParam, lParam) {
-    Global Thumb_Precision_BeforePreparsed
+    Global Thumb_Precision_hDevice_Preparsed
     Global Thumb_Precision_Preparsed
 
     RawInputSize := 0
     DllCall("GetRawInputData", "Ptr",lParam, "UInt",0x10000003, "Ptr",0,         "UInt*",RawInputSize, "UInt",8 + A_PtrSize * 2)
     VarSetCapacity(RawInput, RawInputSize, 0)
     DllCall("GetRawInputData", "Ptr",lParam, "UInt",0x10000003, "Ptr",&RawInput, "UInt*",RawInputSize, "UInt",8 + A_PtrSize * 2)
+    hDevice := NumGet(RawInput, 8, "Ptr")
 
-    If (Thumb_Precision_BeforePreparsed) {
-        hDevice := NumGet(RawInput, 8, "Ptr")
+    If (hDevice != Thumb_Precision_hDevice_Preparsed) {
         PreparsedSize := 0
         DllCall("GetRawInputDeviceInfo", "Ptr",hDevice, "UInt",0x20000005, "Ptr",0,                          "UInt*",PreparsedSize)
         VarSetCapacity(Thumb_Precision_Preparsed, PreparsedSize, 0)
-        Thumb_Precision_BeforePreparsed
-     := DllCall("GetRawInputDeviceInfo", "Ptr",hDevice, "UInt",0x20000005, "Ptr",&Thumb_Precision_Preparsed, "UInt*",PreparsedSize) <= 0
+        Res
+     := DllCall("GetRawInputDeviceInfo", "Ptr",hDevice, "UInt",0x20000005, "Ptr",&Thumb_Precision_Preparsed, "UInt*",PreparsedSize) > 0
+        If (Res) {
+            Thumb_Precision_hDevice_Preparsed := hDevice
+        } Else {
+            Thumb_Precision_hDevice_Preparsed := 0
+        }
     }
 
     ContactCount := 0

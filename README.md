@@ -48,7 +48,7 @@ Example: ``NewtonPad.exe NewtonPad2.ini ThumbKey2.ini``
 
 *1 You may specify either an absolute or relative path. If a relative path is used, the file will be searched in the following locations in order:
  
-1. Application data folder (create manually if needed):<br>
+1. Application data folder (create manually if needed):  
 ```C:\Users\<UserName>\AppData\Roaming\Katsuo\NewtonPad```
 2. The program's current directory 
 3. The folder containing the program
